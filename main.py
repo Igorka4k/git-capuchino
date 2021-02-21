@@ -25,16 +25,15 @@ class ChangeDialog(QWidget):
             'type': self.rw_3,
             'taste': self.rw_4,
             'price': self.rw_5,
-            'V (Liters)': self.rw_6
+            'liters': self.rw_6
         }
         for key in params:
             if params[key].text() == '':
                 continue
-            cur.execute(f"""
-        UPDATE capuchino
-        SET {key} = "{params[key].text()}"
-        WHERE ID = {passed_id}
-        """)
+            cur.execute(f'''
+                        UPDATE capuchino
+                        SET {key} = "{params[key].text()}"
+                        WHERE id = {passed_id}''')
         con.commit()
         con.close()
         # ex.second_form.get_data()
@@ -164,7 +163,12 @@ class Example(QMainWindow):
             self.stack.setCurrentWidget(self.widget)
 
 
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
+
+
 if __name__ == '__main__':
+    sys.excepthook = except_hook
     app = QApplication(sys.argv)
     ex = Example()
     ex.show()
